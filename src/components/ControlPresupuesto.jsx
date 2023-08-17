@@ -17,10 +17,15 @@ const ControlPresupuesto = ({ gastos, presupuesto }) => {
     }, [gastos])
 
     const formatearCantidad = (cantidad) => {
+        
         return cantidad.toLocaleString('en-US', {
-            style: 'currency',
-            currency: 'USD'
+            /*style: 'currency',*/
+            /*currency: 'USD'*/
         })
+        
+        
+
+
     }
 
     return (
@@ -34,19 +39,19 @@ const ControlPresupuesto = ({ gastos, presupuesto }) => {
             <div className='contenedor'>
                 <div className='contenido-presupuesto'>
                     <p>
-                        <span>Presupuesto: </span>{formatearCantidad(presupuesto)}
+                        <span>Presupuesto: </span>S/.{formatearCantidad(presupuesto)}
                     </p>
                 </div>
 
                 <div className='contenido-presupuesto'>
                     <p>
-                        <span>Disponible: </span>{formatearCantidad(disponible)}
+                        <span>Disponible: </span>S/.{formatearCantidad(disponible)}
                     </p>
                 </div>
 
                 <div className='contenido-presupuesto'>
                     <p>
-                        <span>Gastado: </span>{formatearCantidad(gastado)}
+                        <span>Gastado: </span>S/.{formatearCantidad(gastado)}
                     </p>
                 </div>
             </div>

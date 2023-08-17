@@ -1,4 +1,15 @@
 import React from 'react'
+
+import {
+    LeadingActions,
+    SwipeableList,
+    SwipeableListItem,
+    SwipeAction,
+    TrailingActions
+} from 'react-swipeable-list'
+
+import 'react-swipeable-list/dist/styles.css'
+
 import { formatearFecha } from '../helpers'
 
 import IconoAhorro from '../img/icono_ahorro.svg'
@@ -10,7 +21,7 @@ import IconoSalud from '../img/icono_salud.svg'
 import IconoSubscripciones from '../img/icono_suscripciones.svg'
 
 const diccionarioIconos = {
-  
+
     ahorro: IconoAhorro,
     comida: IconoComida,
     casa: IconoCasa,
@@ -20,31 +31,57 @@ const diccionarioIconos = {
     suscripciones: IconoSubscripciones
 }
 
-const Gasto = ({ gasto }) => {
+const Gasto = ({ gasto, setGastoEditar }) => {
 
     const { categoria, nombre, cantidad, id, fecha } = gasto;
 
+    /**Variables para las opciones de editar y borrar - diseño*/
+    const leadingActions = () => (
+        <LeadingActions>
+            <SwipeAction onClick={ () => setGastoEditar(gasto)}>
+                Editar
+            </SwipeAction>
+        </LeadingActions>
+    )
+
+    const trailingActions = () => (
+        <TrailingActions>
+            <SwipeAction onClick={ () => console.log("Eliminado..")}>
+                Eliminar
+            </SwipeAction>
+        </TrailingActions>
+    )
+
     return (
-        <div className='gasto sombra'>
-            <div className='contenido-gasto'>
+        <SwipeableList>
+            <SwipeableListItem
+                leadingActions={leadingActions()}
 
-                {/* IMAGEN */}
-                <img src={diccionarioIconos[categoria]} alt="Mostrando Iconos" />
+                trailingActions={trailingActions()}
+            >
+                <div className='gasto sombra'>
+                    <div className='contenido-gasto'>
 
-                {/* Descripcion */}
-                <div className='descripcion-gasto'>
-                    <p className='categoria'>{categoria}</p>
-                    <p className='nombre-gasto'> {nombre}</p>
-                    <p className='fecha-gasto'>
-                        Agregado el: {''}
-                        <span>{formatearFecha(fecha)}</span>
-                    </p>
+                        {/* IMAGEN */}
+                        <img src={diccionarioIconos[categoria]} alt="Mostrando Iconos" />
 
+                        {/* Descripcion */}
+                        <div className='descripcion-gasto'>
+                            <p className='categoria'>{categoria}</p>
+                            <p className='nombre-gasto'> {nombre}</p>
+                            <p className='fecha-gasto'>
+                                Agregado el: {''}
+                                <span>{formatearFecha(fecha)}</span>
+                            </p>
+
+                        </div>
+                    </div>
+
+                    <p className='cantidad-gasto'>{'S/.'}{cantidad}</p>
                 </div>
-            </div>
+            </SwipeableListItem>
+        </SwipeableList>
 
-            <p className='cantidad-gasto'>{'S/.'}{cantidad}</p>
-        </div>
     )
 }
 
