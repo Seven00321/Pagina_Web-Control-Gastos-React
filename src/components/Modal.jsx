@@ -2,30 +2,40 @@ import { useState, useEffect } from 'react';
 import CerrarBtn from '../img/cerrar.svg'
 import Mensaje from './Mensaje'
 
-const Modal = ({ setModal, animarModal, setAnimarModal, GuardarGasto, gastoEditar }) => {
-
+const Modal = ({ 
+    setModal, 
+    animarModal, 
+    setAnimarModal, 
+    guardarGasto, 
+    gastoEditar, 
+    setGastoEditar 
+}) => {
+    
+    const [mensaje, setMensaje] = useState('');
     const [nombre, setNombre] = useState('');
     const [cantidad, setCantidad] = useState('');
     const [categoria, setCategoria] = useState('');
+    const [fecha, setFecha] = useState('');
 
-    const [mensaje, setMensaje] = useState('');
+    const [id, setId] = useState('');
 
     useEffect(() => {
         if( Object.keys(gastoEditar).length > 0){
             setNombre(gastoEditar.nombre)
             setCantidad(gastoEditar.cantidad)
             setCategoria(gastoEditar.categoria)
+
+            setId(gastoEditar.id)
+            setFecha(gastoEditar.fecha)
         }
     }, []);
 
-
     const ocultarModal = () => {
         setAnimarModal(false);
-
+        setGastoEditar({});
         setTimeout(() => {
             setModal(false);
         }, 500);
-
     }
 
     const handleSubmit = e => {
@@ -37,11 +47,10 @@ const Modal = ({ setModal, animarModal, setAnimarModal, GuardarGasto, gastoEdita
             setTimeout(() => {
                 setMensaje('');
             }, 2500);
-
+            return
         }
 
-        GuardarGasto({nombre, cantidad, categoria});
-
+        guardarGasto({nombre, cantidad, categoria, id, fecha});
     }
 
     return (
@@ -57,7 +66,8 @@ const Modal = ({ setModal, animarModal, setAnimarModal, GuardarGasto, gastoEdita
             <form 
                 onSubmit={handleSubmit}
                 className={`formulario ${animarModal ? "animar" : "cerrar"}`}>
-                <legend>Nuevo Gasto</legend>
+
+                <legend>{gastoEditar.nombre ? "Editar Gasto" : "Nuevo Gasto"}</legend>
 
                 {mensaje && <Mensaje tipo="error">{mensaje}</Mensaje>}
 
@@ -68,7 +78,7 @@ const Modal = ({ setModal, animarModal, setAnimarModal, GuardarGasto, gastoEdita
                         type="text"
                         placeholder='Añade el Nombre del Gasto'
                         value={nombre}
-                        onChange={e => setNombre(e.target.value)}
+                        onChange={ e => setNombre(e.target.value)}
                     />
                 </div>
 
@@ -86,6 +96,7 @@ const Modal = ({ setModal, animarModal, setAnimarModal, GuardarGasto, gastoEdita
 
                 <div className='campo'>
                     <label htmlFor="categoria">Categoria</label>
+                    
                     <select
                         id="categoria"
                         value={categoria}
@@ -99,14 +110,13 @@ const Modal = ({ setModal, animarModal, setAnimarModal, GuardarGasto, gastoEdita
                         <option value="ocio">Ocio</option>
                         <option value="salud">Salud</option>
                         <option value="suscripciones">Suscripciones</option>
-
                     </select>
                 </div>
 
                 <div>
                     <input
                         type="submit"
-                        value="Añadir Gasto"
+                        value={gastoEditar.nombre ? "Guardar Cambios" : "Añadir Gasto"}
                     />
                 </div>
             </form>
